@@ -18,7 +18,6 @@ public class MongoRepository<T> : IRepository<T> where T : IEntity
 
     public async Task<IReadOnlyCollection<T>> GetAllAsync()
     {
-
         var filter = filterBuilder.Empty;
         var items = await collection.Find(filter).ToListAsync();
         return items;
@@ -37,7 +36,6 @@ public class MongoRepository<T> : IRepository<T> where T : IEntity
         return item;
     }
 
-
     public async Task<T> GetOneAsync(Expression<Func<T, bool>> filter)
     {
         var item = await collection.Find(filter).SingleOrDefaultAsync();
@@ -47,9 +45,7 @@ public class MongoRepository<T> : IRepository<T> where T : IEntity
     public async Task CreateAsync(T item)
     {
         if (item is null)
-        {
             throw new ArgumentNullException(nameof(item));
-        }
 
         await collection.InsertOneAsync(item);
     }
@@ -57,9 +53,7 @@ public class MongoRepository<T> : IRepository<T> where T : IEntity
     public async Task UpdateAsync(T item)
     {
         if (item is null)
-        {
             throw new ArgumentNullException(nameof(item));
-        }
 
         var filter = filterBuilder.Eq(entity => entity.Id, item.Id);
         await collection.ReplaceOneAsync(filter, item);
@@ -68,14 +62,9 @@ public class MongoRepository<T> : IRepository<T> where T : IEntity
     public async Task DeleteAsync(T item)
     {
         if (item is null)
-        {
             throw new ArgumentNullException(nameof(item));
-        }
 
         var filter = filterBuilder.Eq(entity => entity.Id, item.Id);
         await collection.DeleteOneAsync(filter);
     }
-
-
-
 }
