@@ -4,6 +4,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Play.Common.Configuration;
 using Play.Common.Settings;
 
 namespace Play.Common.MongoDB;
@@ -18,10 +19,8 @@ public static class Extensions
         serviceCollection.AddSingleton(serviceProvider =>
         {
             var configuration = serviceProvider.GetService<IConfiguration>();
-            var serviceSettings = configuration?.GetSection(nameof(ServiceSettings)).Get<ServiceSettings>();
-            var mongoDbSettings = configuration?.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
-            var mongoClient = new MongoClient(mongoDbSettings?.ConnectionString);
-            var database = mongoClient.GetDatabase(serviceSettings?.Name);
+            var mongoClient = new MongoClient(configuration.GetSection<MongoDbSettings>().ConnectionString);
+            var database = mongoClient.GetDatabase(configuration.GetSection<ServiceSettings>().Name);
             return database;
         });
 
