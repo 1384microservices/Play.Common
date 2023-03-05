@@ -1,3 +1,5 @@
+using GreenPipes;
+using System;
 using System.Reflection;
 using MassTransit;
 using MassTransit.Definition;
@@ -19,8 +21,14 @@ public static class Extensions
                 var configuration = ctx.GetService<IConfiguration>();
                 cfg.Host(configuration.GetRabbitMQSettings().Host);
                 cfg.ConfigureEndpoints(ctx, new KebabCaseEndpointNameFormatter(configuration.GetServiceSettings().Name, false));
+                cfg.UseMessageRetry(retry =>
+                {
+                    retry.Interval(3, TimeSpan.FromSeconds(5));
+                });
             });
-        }).AddMassTransitHostedService();
+        });
+
+        services.AddMassTransitHostedService();
 
         return services;
     }
