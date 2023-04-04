@@ -41,7 +41,7 @@ public static class Extensions
         serviceCollectionBusConfigurator.UsingPlayEconomyRabbitMQ(retryConfigurator => retryConfigurator.Interval(3, TimeSpan.FromSeconds(3)));
     }
 
-    private static void UsingPlayEconomyRabbitMQ(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator)
+    public static void UsingPlayEconomyRabbitMQ(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator)
     {
         serviceCollectionBusConfigurator.UsingRabbitMq((ctx, cfg) =>
         {
