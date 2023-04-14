@@ -30,9 +30,14 @@ $version="1.0.6"
 # Change with your organisation name.
 $owner="1384microservices"
 
+# Change with your GitHub Personal Access Token
+$gh_pat="[type your PAT here]"
+
 # Change with your repository URL
 $repositoryUrl="https://github.com/1384microservices/Play.Common"
 
-# Publish package
-dotnet pack src\Play.Common\ --configuration Release -p:PackageVersion=$version -p:$repositoryUrl -o ..\packages
+# Build package
+dotnet pack src\Play.Common\ --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=$repositoryUrl -o ..\packages\
+
+dotnet nuget push ..\packages\Play.Common.$version.nupkg --api-key $gh_pat --source "github"
 ```
