@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <PackageDescription>Play economy services common libraries.</PackageDescription>
+    <Authors>Andrei Tudor</Authors>
+    <Company>Play Economy</Company>
   </PropertyGroup>
 
   <ItemGroup>

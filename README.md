@@ -1,10 +1,12 @@
 # Play Common
-Play economy services microservices common libraries.
+Play economy services common libraries.
 
 ## About
 This project implements libraries used across all Play Economy services like:
 * Configurations
 * MongoDB storage connections
+* MassTransit & RabbitMQ
+* ASP.Net Core Identity
 
 ## Contribute
 ### Prerequisites
@@ -19,7 +21,18 @@ For Windows boxes you have to issue this command in a Powershell window: `New-It
 
 Clone this repository to your box: `git clone https://github.com/1384microservices/Play.Common.git`
 
-## Publish package
+## Create and publish package
 Switch to project folder.
+``` powershell
+# Change with your package version.
+$version="1.0.6"
 
-Run publish command: `dotnet pack -o ../../packages/ `
+# Change with your organisation name.
+$owner="1384microservices"
+
+# Change with your repository URL
+$repositoryUrl="https://github.com/1384microservices/Play.Common"
+
+# Publish package
+dotnet pack src\Play.Common\ --configuration Release -p:PackageVersion=$version -p:$repositoryUrl -o ..\packages
+```
