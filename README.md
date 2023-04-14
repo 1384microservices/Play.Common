@@ -21,7 +21,7 @@ For Windows boxes you have to issue this command in a Powershell window: `New-It
 
 Clone this repository to your box: `git clone https://github.com/1384microservices/Play.Common.git`
 
-## Create and publish package
+### Create and publish package
 Switch to project folder.
 ``` powershell
 # Change with your package version.
