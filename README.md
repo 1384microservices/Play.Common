@@ -39,5 +39,6 @@ $repositoryUrl="https://github.com/1384microservices/Play.Common"
 # Build package
 dotnet pack src\Play.Common\ --configuration Release -p:PackageVersion=$version -p:RepositoryUrl=$repositoryUrl -o ..\packages\
 
+# Publish package
 dotnet nuget push ..\packages\Play.Common.$version.nupkg --api-key $gh_pat --source "github"
 ```
