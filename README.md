@@ -26,7 +26,7 @@ git clone https://github.com/1384microservices/Play.Common.git
 Switch to project folder.
 ``` powershell
 # Change with your package version.
-$version="1.0.6"
+$version="1.0.7"
 
 $owner="1384microservices"
 
