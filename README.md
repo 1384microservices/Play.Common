@@ -15,9 +15,12 @@ This project implements libraries used across all Play Economy services like:
 * Install dotnet 6 (or greater) SDK: `winget install --d Microsoft.DotNet.SDK.6`
 
 ### Clone
-Create a project folder on your box. **D:\Projects\Play Economy** is a good idea but you can choose whatever fits your needs.
-For Windows boxes you have to issue this command in a Powershell window: `New-Item -ItemType Directory -Path 'D:\Projects\Play Economy'`.
-Clone this repository to your box: `git clone https://github.com/1384microservices/Play.Common.git`
+Create a project workspace folder on your box. **D:\Projects\PlayEconomy** is a good idea but you can choose whatever fits your needs. Switch to this workspace and clone the repository.
+```powershell
+New-Item -ItemType Directory -Path 'D:\Projects\Play Economy'
+Set-Location D:\Projects\PlayEconomy
+git clone https://github.com/1384microservices/Play.Common.git
+```
 
 ### Create and publish package
 Switch to project folder.
