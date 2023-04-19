@@ -21,7 +21,7 @@ public static class Extensions
     {
         var serviceSettings = configuration.GetServiceSettings();
 
-        switch (serviceSettings.MessageBrocker?.ToUpper())
+        switch (serviceSettings.MessageBroker?.ToUpper())
         {
             case ServiceBus:
                 services.AddMassTransitWithAzureServiceBus(retryConfigurator);
@@ -32,14 +32,13 @@ public static class Extensions
                 services.AddMassTransitWithRabbitMQ(retryConfigurator);
                 break;
         }
-        services.AddMassTransitHostedService();
         return services;
     }
 
     public static void UsingPlayEconomyMessageBroker(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, IConfiguration configuration, Action<IRetryConfigurator> retryConfiguratory = null)
     {
         var serviceSettings = configuration.GetServiceSettings();
-        switch (serviceSettings.MessageBrocker?.ToUpper())
+        switch (serviceSettings.MessageBroker?.ToUpper())
         {
             case ServiceBus:
                 serviceCollectionBusConfigurator.UsingPlayEconomyAzureServiceBus(retryConfiguratory);
