@@ -5,6 +5,11 @@ namespace Play.Common.Configuration;
 
 public static class Extensions
 {
+    public static ServiceBusSettings GetServiceBusSettings(this IConfiguration configuration)
+    {
+        return configuration.GetSection<ServiceBusSettings>();
+    }
+
     public static RabbitMQSettings GetRabbitMQSettings(this IConfiguration configuration)
     {
         return configuration.GetSection<RabbitMQSettings>();

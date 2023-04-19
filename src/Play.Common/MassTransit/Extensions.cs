@@ -13,18 +13,50 @@ namespace Play.Common.MassTransit;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMassTransitWithRabbitMQ(this IServiceCollection services)
+    private const string RabbitMQ = "RABBITMQ";
+    private const string ServiceBus = "SERVICEBUS";
+
+    #region  generic
+    public static IServiceCollection AddMassTransitWithMessageBroker(this IServiceCollection services, IConfiguration configuration, Action<IRetryConfigurator> retryConfigurator = null)
     {
-        services.AddMassTransit(busConfigurator =>
+        var serviceSettings = configuration.GetServiceSettings();
+
+        switch (serviceSettings.MessageBrocker?.ToUpper())
         {
-            busConfigurator.AddConsumers(Assembly.GetEntryAssembly());
-            busConfigurator.UsingPlayEconomyRabbitMQ(retry => retry.Interval(3, TimeSpan.FromSeconds(3)));
-        });
+            case ServiceBus:
+                services.AddMassTransitWithAzureServiceBus(retryConfigurator);
+                break;
+
+            case RabbitMQ:
+            default:
+                services.AddMassTransitWithRabbitMQ(retryConfigurator);
+                break;
+        }
         services.AddMassTransitHostedService();
         return services;
     }
 
-    public static IServiceCollection AddMassTransitWithRabbitMQ(this IServiceCollection services, Action<IRetryConfigurator> retryConfigurator)
+    public static void UsingPlayEconomyMessageBroker(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, IConfiguration configuration, Action<IRetryConfigurator> retryConfiguratory = null)
+    {
+        var serviceSettings = configuration.GetServiceSettings();
+        switch (serviceSettings.MessageBrocker?.ToUpper())
+        {
+            case ServiceBus:
+                serviceCollectionBusConfigurator.UsingPlayEconomyAzureServiceBus(retryConfiguratory);
+                break;
+
+            case RabbitMQ:
+            default:
+                serviceCollectionBusConfigurator.UsingPlayEconomyRabbitMQ(retryConfiguratory);
+                break;
+        }
+    }
+
+
+    #endregion
+
+    #region RabbitMQ
+    public static IServiceCollection AddMassTransitWithRabbitMQ(this IServiceCollection services, Action<IRetryConfigurator> retryConfigurator = null)
     {
         services.AddMassTransit(busConfigurator =>
         {
@@ -35,13 +67,7 @@ public static class Extensions
         return services;
     }
 
-    public static void UsingPlayEconomyRabbitMQ(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator)
-    {
-
-        serviceCollectionBusConfigurator.UsingPlayEconomyRabbitMQ(retryConfigurator => retryConfigurator.Interval(3, TimeSpan.FromSeconds(3)));
-    }
-
-    public static void UsingPlayEconomyRabbitMQ(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator)
+    public static void UsingPlayEconomyRabbitMQ(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator = null)
     {
         serviceCollectionBusConfigurator.UsingRabbitMq((ctx, cfg) =>
         {
@@ -50,7 +76,42 @@ public static class Extensions
             var serviceSettings = configuration.GetServiceSettings();
             cfg.Host(rabbitMqConfiguration.Host);
             cfg.ConfigureEndpoints(ctx, new KebabCaseEndpointNameFormatter(serviceSettings.Name, false));
+            if (retryConfigurator == null)
+            {
+                retryConfigurator = (retry) => retry.Interval(3, TimeSpan.FromSeconds(3));
+            }
             cfg.UseMessageRetry(retryConfigurator);
         });
     }
+    #endregion
+
+    #region Azure Service Bus
+    public static IServiceCollection AddMassTransitWithAzureServiceBus(this IServiceCollection services, Action<IRetryConfigurator> retryConfigurator = null)
+    {
+        services.AddMassTransit(busConfigurator =>
+        {
+            busConfigurator.AddConsumers(Assembly.GetEntryAssembly());
+            busConfigurator.UsingPlayEconomyAzureServiceBus(retryConfigurator);
+        });
+        services.AddMassTransitHostedService();
+        return services;
+    }
+
+    public static void UsingPlayEconomyAzureServiceBus(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator = null)
+    {
+        serviceCollectionBusConfigurator.UsingAzureServiceBus((ctx, cfg) =>
+        {
+            var configuration = ctx.GetService<IConfiguration>();
+            var serviceBusSettings = configuration.GetServiceBusSettings();
+            var serviceSettings = configuration.GetServiceSettings();
+            cfg.Host(serviceBusSettings.ConnectionString);
+            cfg.ConfigureEndpoints(ctx, new KebabCaseEndpointNameFormatter(serviceSettings.Name, false));
+            if (retryConfigurator == null)
+            {
+                retryConfigurator = (retry) => retry.Interval(3, TimeSpan.FromSeconds(3));
+            }
+            cfg.UseMessageRetry(retryConfigurator);
+        });
+    }
+    #endregion
 }
