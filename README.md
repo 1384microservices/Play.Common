@@ -26,12 +26,12 @@ git clone https://github.com/1384microservices/Play.Common.git
 Switch to project folder.
 ``` powershell
 # Change with your package version.
-$version="1.0.15"
+$version="1.0.16"
 
 $owner="1384microservices"
 
 # Change with your GitHub Personal Access Token
-$gh_pat="[type your PAT here]"
+$gh_pat= $env:GITHUB_PAT
 
 $repositoryUrl="https://github.com/1384microservices/Play.Common"
 
