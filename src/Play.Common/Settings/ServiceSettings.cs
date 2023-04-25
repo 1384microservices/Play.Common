@@ -6,4 +6,5 @@ public class ServiceSettings
     public string Name { get; init; } = string.Empty;
     public string Authority { get; init; } = string.Empty;
     public string MessageBroker { get; init; }
+    public string KeyVaultName { get; init; }
 }
