@@ -46,7 +46,7 @@ jobs:
       - name: Restore dependencies
         run: |
           dotnet restore ./src/Play.Common/ \
-          -- verbosity minimal
+          --verbosity minimal
 
       - name: Pack
         run: |
