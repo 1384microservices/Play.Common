@@ -51,9 +51,9 @@ jobs:
       - name: Pack
         run: |
           dotnet restore ./src/Play.Common/ \
-          -- configuration Release \
+          --configuration Release \
           -p:PackageVersion=${{needs.generate-version.outputs.new_version}} \
-          -p:RepositoryUrl=https://github.com/${{github.repository_owner}}/play.identity \
+          -p:RepositoryUrl=https://github.com/${{github.repository_owner}}/play.common \
           -o out
 
       - name: Publish
