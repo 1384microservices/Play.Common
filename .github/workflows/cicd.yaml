@@ -50,7 +50,7 @@ jobs:
 
       - name: Pack
         run: |
-          dotnet restore ./src/Play.Common/ \
+          dotnet pack ./src/Play.Common/ \
           --configuration Release \
           -p:PackageVersion=${{needs.generate-version.outputs.new_version}} \
           -p:RepositoryUrl=https://github.com/${{github.repository_owner}}/play.common \
