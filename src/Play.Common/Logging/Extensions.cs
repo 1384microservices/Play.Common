@@ -11,10 +11,11 @@ public static class Extensions
     public static IServiceCollection AddSeqLogging(this IServiceCollection services, IConfiguration configuration)
     {
         var seqSettings = configuration.GetSeqSettings();
-        return services.AddLogging(builder => builder.AddSeq(serverUrl:seqSettings.Host));
+        return services.AddLogging(builder => builder.AddSeq(serverUrl: seqSettings.ServerUrl));
     }
 
-    public static IServiceCollection AddSeqLogging(this IServiceCollection services, SeqSettings seqSettings) {
+    public static IServiceCollection AddSeqLogging(this IServiceCollection services, SeqSettings seqSettings)
+    {
         return services.AddLogging(builder => builder.AddSeq(serverUrl: seqSettings.Host));
     }
 }
