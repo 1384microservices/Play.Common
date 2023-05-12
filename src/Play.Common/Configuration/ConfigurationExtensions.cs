@@ -5,6 +5,11 @@ namespace Play.Common.Configuration;
 
 public static class ConfigurationExtensions
 {
+    public static SeqSettings GetSeqSettings(this IConfiguration configuration)
+    {
+        return configuration.GetSection<SeqSettings>();
+    }
+
     public static ServiceBusSettings GetServiceBusSettings(this IConfiguration configuration)
     {
         return configuration.GetSection<ServiceBusSettings>();
