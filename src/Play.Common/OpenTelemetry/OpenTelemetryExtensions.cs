@@ -19,7 +19,6 @@ public static class OpenTelemetryExtensions
                     .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(serviceName: serviceSettings.Name))
                     .AddHttpClientInstrumentation()
                     .AddAspNetCoreInstrumentation()
-                    .AddConsoleExporter()
                     .AddJaegerExporter(opt =>
                     {
                         opt.AgentHost = jaegerSettings.Host;
