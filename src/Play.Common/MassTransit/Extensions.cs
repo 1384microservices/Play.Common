@@ -1,13 +1,10 @@
-using GreenPipes;
 using System;
 using System.Reflection;
 using MassTransit;
-using MassTransit.Definition;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Play.Common.Configuration;
-using MassTransit.ExtensionsDependencyInjectionIntegration;
-using GreenPipes.Configurators;
+
 
 namespace Play.Common.MassTransit;
 
@@ -35,7 +32,7 @@ public static class Extensions
         return services;
     }
 
-    public static void UsingPlayEconomyMessageBroker(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, IConfiguration configuration, Action<IRetryConfigurator> retryConfiguratory = null)
+    public static void UsingPlayEconomyMessageBroker(this IBusRegistrationConfigurator serviceCollectionBusConfigurator, IConfiguration configuration, Action<IRetryConfigurator> retryConfiguratory = null)
     {
         var serviceSettings = configuration.GetServiceSettings();
         switch (serviceSettings.MessageBroker?.ToUpper())
@@ -62,11 +59,10 @@ public static class Extensions
             busConfigurator.AddConsumers(Assembly.GetEntryAssembly());
             busConfigurator.UsingPlayEconomyRabbitMQ(retryConfigurator);
         });
-        services.AddMassTransitHostedService();
         return services;
     }
 
-    public static void UsingPlayEconomyRabbitMQ(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator = null)
+    public static void UsingPlayEconomyRabbitMQ(this IBusRegistrationConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator = null)
     {
         serviceCollectionBusConfigurator.UsingRabbitMq((ctx, cfg) =>
         {
@@ -92,11 +88,10 @@ public static class Extensions
             busConfigurator.AddConsumers(Assembly.GetEntryAssembly());
             busConfigurator.UsingPlayEconomyAzureServiceBus(retryConfigurator);
         });
-        services.AddMassTransitHostedService();
         return services;
     }
 
-    public static void UsingPlayEconomyAzureServiceBus(this IServiceCollectionBusConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator = null)
+    public static void UsingPlayEconomyAzureServiceBus(this IBusRegistrationConfigurator serviceCollectionBusConfigurator, Action<IRetryConfigurator> retryConfigurator = null)
     {
         serviceCollectionBusConfigurator.UsingAzureServiceBus((ctx, cfg) =>
         {
