@@ -76,6 +76,7 @@ public static class Extensions
                 retryConfigurator = (retry) => retry.Interval(3, TimeSpan.FromSeconds(3));
             }
             cfg.UseMessageRetry(retryConfigurator);
+            cfg.UseInstrumentation(serviceName: serviceSettings.Name);
         });
     }
     #endregion
@@ -105,6 +106,7 @@ public static class Extensions
                 retryConfigurator = (retry) => retry.Interval(3, TimeSpan.FromSeconds(3));
             }
             cfg.UseMessageRetry(retryConfigurator);
+            cfg.UseInstrumentation(serviceName: serviceSettings.Name);
         });
     }
     #endregion
